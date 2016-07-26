@@ -3,9 +3,9 @@
 交集的mapper
 '''
 
-from mapper import Mapper
-from key_factory import KeyFactory
-from default_key_factory import DefaultKeyFactory
+from base.mapper import Mapper
+from base.key_factory import KeyFactory
+from base.default_key_factory import DefaultKeyFactory
 
 class JoinMapper(Mapper):
     def __init__(self, kf=DefaultKeyFactory()):

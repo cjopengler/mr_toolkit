@@ -3,9 +3,9 @@
 交集的reducer
 '''
 
-from key_factory import KeyFactory
-from reducer import Reducer
-from default_key_factory import DefaultKeyFactory
+from base.key_factory import KeyFactory
+from base.reducer import Reducer
+from base.default_key_factory import DefaultKeyFactory
 
 class JoinReducer(Reducer):
     def __init__(self, kf=DefaultKeyFactory()):
@@ -50,9 +50,10 @@ class JoinReducer(Reducer):
         默认返回key
         :return: merge的字符串
         '''
-        return self._join_key
+        print self._join_key
 
     def execute(self,line):
+
         key = self._key_factory.create(line)
         value = self._create_value(line)
 

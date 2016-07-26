@@ -5,9 +5,10 @@
 
 from mapper import Mapper
 from key_factory import KeyFactory
+from default_key_factory import DefaultKeyFactory
 
 class JoinMapper(Mapper):
-    def __init__(self, kf):
+    def __init__(self, kf=DefaultKeyFactory()):
         '''
         初始化mapper
         :param kf: key factory

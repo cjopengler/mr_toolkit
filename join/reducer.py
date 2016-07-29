@@ -6,34 +6,40 @@
 from base.key_factory import KeyFactory
 from base.reducer import Reducer
 from base.default_key_factory import DefaultKeyFactory
+from abc import ABCMeta, abstractmethod
 
 class JoinReducer(Reducer):
-    def __init__(self, kf=DefaultKeyFactory()):
+    _KEY_INDEX = 0
+    _ID_CODE_INDEX = 1
+    _VALUE_INDEX = 2
+
+    def __init__(self):
         '''
         初始化reducer
-        :param kf: key产生的工厂
         :return:
         '''
-        self._key_factory = kf
-
         self._join_key = None
+
         # value的list
         self._join_values = None
+        self._join_id_codes = None
 
-    def set_key_factory(self, kf):
+
+    def _create_key(self, line):
         '''
-        设置产生key的工厂
-        :param kf:
+        从line中产生key
+        :param line:
         :return:
         '''
-        self._key_factory = kf
+        return line.rstrip().split('\t')[JoinReducer._KEY_INDEX]
 
-    def get_key_factory(self):
+    def _create_id_code(self, line):
         '''
-        返回key的工厂
-        :return: key的工厂
+        从line中产生id_code
+        :param line:
+        :return:
         '''
-        return self._key_factory
+        return line.rstrip().split('\t')[JoinReducer._ID_CODE_INDEX]
 
     def _create_value(self, line):
         '''
@@ -41,34 +47,52 @@ class JoinReducer(Reducer):
         :param line: 行数据
         :return: key产生的value, 返回的类型必须是字符串
         '''
-        return line.rstrip()
+        return line.rstrip().split('\t')[JoinReducer._VALUE_INDEX]
 
 
-    def _output_merge_values(self):
+    @abstractmethod
+    def _output_result(self, key, id_codes, values):
+        '''
+        子类中自己定义处理交集的函数
+        :param key: key
+        :param id_codes: id_code
+        :param values:
+        :return:
+        '''
+        pass
+
+    def __output_merge_values(self):
         '''
         将同一个key的value合并在一起并输出字符串
         默认返回key
         :return: merge的字符串
         '''
-        print self._join_key
+        if (len(self._join_values) > 1):
+            self._output_result(self._join_key, self._join_id_codes, self._join_values)
+
+
 
     def execute(self,line):
 
-        key = self._key_factory.create(line)
+        key = self._create_key(line)
+        id_code = self._create_id_code(line)
         value = self._create_value(line)
 
         if self._join_key is None:
             self._join_key = key
             self._join_values = [value]
+            self._join_id_codes = [id_code]
 
         elif key == self._join_key:
             self._join_values.append(value)
+            self._join_id_codes.append(id_code)
 
         else:
-            self._output_merge_values()
+            self.__output_merge_values()
             self._join_key = key
             self._join_values = [value]
+            self._join_id_codes = [id_code]
 
 
     def complete(self):
-        self._output_merge_values()
+        self.__output_merge_values()

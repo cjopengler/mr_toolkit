@@ -8,12 +8,16 @@ from base.key_factory import KeyFactory
 from base.default_key_factory import DefaultKeyFactory
 
 class JoinMapper(Mapper):
-    def __init__(self, kf=DefaultKeyFactory()):
+    def __init__(self, id_code, kf=DefaultKeyFactory()):
         '''
         初始化mapper
+        :param id_code: 用来区分是哪个数据集的标识,例如计算数据集1和数据集2的交集,需要用id_code来标识和区分
+        以便在reduce的时候,能够知道交集的数据是来自哪个数据集.这个标志位用来处理不同格式的数据集.如果数据集的格式
+        相同,则可以不用设置成同一个字符串即可.
         :param kf: key factory
         '''
         self._key_factory = kf
+        self._id_code = id_code
 
     def set_key_factory(self, kf):
         '''
@@ -45,7 +49,7 @@ class JoinMapper(Mapper):
         :param value:
         :return:
         '''
-        print '%s\t%s' % (key, value)
+        print '%s\t%s\t%s' % (key, str(self._id_code), value)
 
     def execute(self, line):
         key = self._key_factory.create(line)

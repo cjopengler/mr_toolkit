@@ -1,6 +1,6 @@
-a	a	1
-a	a	5
-a	a	aa
-b	b	2
-b	b	bb
-c	c	3
+a	0	a	1
+a	0	a	5
+a	0	a	aa
+b	0	b	2
+b	0	b	bb
+c	0	c	3

@@ -47,7 +47,9 @@ class JoinReducer(Reducer):
         :param line: 行数据
         :return: key产生的value, 返回的类型必须是字符串
         '''
-        return line.rstrip().split('\t')[JoinReducer._VALUE_INDEX]
+        key_len = len(self._create_key(line))
+        id_code_len = len(self._create_id_code(line))
+        return line.rstrip()[key_len+1+id_code_len+1:]
 
 
     @abstractmethod

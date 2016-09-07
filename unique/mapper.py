@@ -3,12 +3,12 @@
 实现数据集制定key的去重
 '''
 
-
 from base.mapper import Mapper
 from abc import ABCMeta, abstractmethod
 import json
 
-class LineUniqueMapper(Mapper):
+
+class UniqueMapper(Mapper):
     def __init__(self):
         '''
         初始化mapper
@@ -36,10 +36,13 @@ class LineUniqueMapper(Mapper):
 
         print (json.dumps(output_tuple, ensure_ascii=False).encode('utf-8'))
 
-    def execute(self, line):
+    def __execute_by_line(self, line):
         key, value = self._create_kv(line)
 
         if key is not None:
             self._output(key, value)
 
+    def execute(self, input_file):
+        for line in input_file:
+            self.__execute_by_line(line)
 

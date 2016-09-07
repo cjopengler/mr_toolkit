@@ -3,14 +3,13 @@
 去重的reducer
 '''
 
-from base.key_factory import KeyFactory
+
 from base.reducer import Reducer
-from base.default_key_factory import DefaultKeyFactory
 from abc import ABCMeta, abstractmethod
 import json
 
 
-class LineUniqueReducer(Reducer):
+class UniqueReducer(Reducer):
 
     _key_index = 0
     _value_index = 1
@@ -25,14 +24,14 @@ class LineUniqueReducer(Reducer):
         # value的list
         self._join_values = None
 
-    def _create_kv(self, line, decode='utf-8'):
+    def _create_kv(self, line):
         """
         产生key和value,子类可以重写这个函数生成key 和value
         :param line: 行数据
         :return: key, value元组
         """
         kv = json.loads(line.rstrip().decode('utf-8'))
-        return (kv[self._key_index], kv[self._value_index])
+        return kv[self._key_index], kv[self._value_index]
 
     @abstractmethod
     def _output_result(self, key, values):
@@ -53,7 +52,7 @@ class LineUniqueReducer(Reducer):
         """
         self._output_result(self._join_key, self._join_values)
 
-    def execute(self,line):
+    def __execute_by_line(self, line):
         key, value = self._create_kv(line)
 
         if self._join_key is None:
@@ -68,5 +67,10 @@ class LineUniqueReducer(Reducer):
             self._join_key = key
             self._join_values = [value]
 
-    def output_merge_values(self):
+    def execute(self, input_file):
+        for line in input_file:
+            self.__execute_by_line(line)
+
         self.__output_merge_values()
+
+

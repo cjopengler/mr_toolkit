@@ -6,5 +6,5 @@ mapper接口
 
 class Mapper(object):
 
-    def execute(self, input_content):
+    def execute(self, input_file):
         pass

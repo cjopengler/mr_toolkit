@@ -3,11 +3,9 @@
 import sys
 sys.path.append('../../')
 
-from unique.line_reducer import LineUniqueReducer
-from framework.unique_reducer import UniqueReducer
+from unique.reducer import UniqueReducer
 
-
-class DemoReducer(LineUniqueReducer):
+class DemoReducer(UniqueReducer):
     def _output_result(self, key, values):
         if None not in values:
             print key, values
@@ -16,5 +14,5 @@ class DemoReducer(LineUniqueReducer):
 
 if __name__ == '__main__':
 
-    reducer = UniqueReducer(DemoReducer())
+    reducer = DemoReducer()
     reducer.execute(sys.stdin)

@@ -51,9 +51,9 @@ class JoinMapper(Mapper):
         '''
         print '%s\t%s\t%s' % (key, str(self._id_code), value)
 
-    def execute(self, line):
-        key = self._key_factory.create(line)
-        value = self._create_value(line)
+    def execute(self, input_content):
+        key = self._key_factory.create(input_content)
+        value = self._create_value(input_content)
         self._output(key, value)
 
 

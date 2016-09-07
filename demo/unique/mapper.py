@@ -2,18 +2,21 @@
 import sys
 sys.path.append('../../')
 
-from unique.mapper import UniqueMapper
+from unique.line_mapper import LineUniqueMapper
+from framework.unique_mapper import UniqueMapper
 
-class DemoMapper(UniqueMapper):
+class DemoMapper(LineUniqueMapper):
     def _create_kv(self, line):
         infos = line.rstrip().decode('utf-8').split('\t')
         key = infos[0]
-        value = int(infos[1])
+
+        value = None
+        if len(infos) == 2:
+            value = int(infos[1])
+
         return key, value
 
 if __name__ == '__main__':
-    demo_mapper = DemoMapper()
-
-    for line in sys.stdin:
-        demo_mapper.execute(line)
+    mapper = UniqueMapper(DemoMapper())
+    mapper.execute(sys.stdin)
 

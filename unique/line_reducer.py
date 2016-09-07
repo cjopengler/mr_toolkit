@@ -10,7 +10,7 @@ from abc import ABCMeta, abstractmethod
 import json
 
 
-class UniqueReducer(Reducer):
+class LineUniqueReducer(Reducer):
 
     _key_index = 0
     _value_index = 1
@@ -68,5 +68,5 @@ class UniqueReducer(Reducer):
             self._join_key = key
             self._join_values = [value]
 
-    def complete(self):
+    def output_merge_values(self):
         self.__output_merge_values()

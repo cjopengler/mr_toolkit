@@ -96,5 +96,5 @@ class JoinReducer(Reducer):
             self._join_id_codes = [id_code]
 
 
-    def complete(self):
+    def output_merge_values(self):
         self.__output_merge_values()

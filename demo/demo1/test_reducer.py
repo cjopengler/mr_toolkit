@@ -15,4 +15,4 @@ for line in sys.stdin:
     test_reducer.execute(line.decode('utf-8').rstrip())
 
 
-test_reducer.complete()
+test_reducer.output_merge_values()

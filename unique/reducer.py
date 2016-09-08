@@ -50,7 +50,8 @@ class UniqueReducer(Reducer):
         默认返回key
         :return: merge的字符串
         """
-        self._output_result(self._join_key, self._join_values)
+        if self._join_key is not None:
+            self._output_result(self._join_key, self._join_values)
 
     def __execute_by_line(self, line):
         key, value = self._create_kv(line)

@@ -7,6 +7,7 @@
 from base.reducer import Reducer
 from abc import ABCMeta, abstractmethod
 import json
+from collections import OrderedDict
 
 
 class UniqueReducer(Reducer):
@@ -30,7 +31,8 @@ class UniqueReducer(Reducer):
         :param line: 行数据
         :return: key, value元组
         """
-        kv = json.loads(line.rstrip().decode('utf-8'))
+        kv = json.loads(line.rstrip().decode('utf-8'),
+                        object_pairs_hook=OrderedDict)
         return kv[self._key_index], kv[self._value_index]
 
     @abstractmethod

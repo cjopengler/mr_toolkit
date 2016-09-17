@@ -55,20 +55,31 @@ class UniqueReducer(Reducer):
         if self._join_key is not None:
             self._output_result(self._join_key, self._join_values)
 
+    def _append_value(self, key, value_list, value):
+        """
+        对key产生的数组追加数据, 当数据规模太大时,子类可以通过重新实现该方法来限制数量
+        :param key: 当前的key
+        :param value_list: 存放所有value的list数组
+        :return:
+        """
+        value_list.append(value)
+
     def __execute_by_line(self, line):
         key, value = self._create_kv(line)
 
         if self._join_key is None:
             self._join_key = key
-            self._join_values = [value]
+            self._join_values = list()
+            self._append_value(key, self._join_values, value)
 
         elif key == self._join_key:
-            self._join_values.append(value)
+            self._append_value(key, self._join_values, value)
 
         else:
             self.__output_merge_values()
             self._join_key = key
-            self._join_values = [value]
+            self._join_values = list()
+            self._append_value(key, self._join_values, value)
 
     def execute(self, input_file):
         for line in input_file:

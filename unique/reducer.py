@@ -31,9 +31,14 @@ class UniqueReducer(Reducer):
         :param line: 行数据
         :return: key, value元组
         """
-        kv = json.loads(line.rstrip().decode('utf-8'),
+        key, value = line.rstrip().decode('utf-8').split('\t')
+
+        key = json.loads(key)
+
+        value = json.loads(value,
                         object_pairs_hook=OrderedDict)
-        return kv[self._key_index], kv[self._value_index]
+
+        return key, value
 
     @abstractmethod
     def _output_result(self, key, values):

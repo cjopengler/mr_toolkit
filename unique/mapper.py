@@ -32,9 +32,9 @@ class UniqueMapper(Mapper):
         :param value:
         :return:
         """
-        output_tuple = (key, value)
 
-        print (json.dumps(output_tuple, ensure_ascii=False).encode('utf-8'))
+        print '%s\t%s' % (json.dumps(key, ensure_ascii=False).encode('utf-8'),
+                          json.dumps(value, ensure_ascii=False).encode('utf-8'))
 
     def __execute_by_line(self, line):
         key, value = self._create_kv(line)
